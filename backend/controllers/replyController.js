@@ -1,5 +1,8 @@
 const Reply = require('../models/Reply');
 const Post = require('../models/Post')
+const ReplyService = require('../services/ReplyService');
+const ReplyServiceProxy = require('../services/ReplyServiceProxy');
+
 // Add Reply
 const addReply = async (req, res) => {
   const { content } = req.body;
@@ -26,8 +29,8 @@ const getReplies = async (req, res) => {
   }
 };
 
-// Delete Reply
-const deleteReply = async (req, res) => {
+// Delete Reply in proxy design pattern
+/* const deleteReply = async (req, res) => {
   try {
     const reply = await Reply.findById(req.params.replyId);
     if (!reply) return res.status(404).json({ message: 'Reply not found' });
@@ -40,6 +43,17 @@ const deleteReply = async (req, res) => {
   } catch (error) {
     // console.error('Error deleting reply:', error);
     res.status(500).json({ message: error.message });
+  }
+}; */
+const deleteReply = async (req, res) => {
+  try {
+    const proxy = new ReplyServiceProxy(new ReplyService());
+    const result = await proxy.deleteReply(req.params.replyId, req.user.id);
+
+    if (!result) return res.status(404).json({ message: 'Reply not found or already deleted' });
+    res.json({ message: 'Reply deleted successfully' });
+  } catch (error) {
+    res.status(403).json({ message: error.message });
   }
 };
 
