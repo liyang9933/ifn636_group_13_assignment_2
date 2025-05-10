@@ -1,12 +1,20 @@
-import React, { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  // Save user status in the browser storage.
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const login = (userData) => {
     setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData)); // save to local storage.
   };
 
   const logout = () => {

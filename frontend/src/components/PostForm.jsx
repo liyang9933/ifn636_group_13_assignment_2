@@ -21,12 +21,23 @@ const PostForm = ({ posts, setPosts, editingPost, setEditingPost }) => {
         const response = await axiosInstance.put(`/api/posts/${editingPost._id}`, formData, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
-        setPosts(posts.map((post) => (post._id === response.data._id ? response.data : post)));
+        // setPosts(posts.map((post) => (post._id === response.data._id ? response.data : post)));
+        setPosts((prevPosts) => {
+          const updated = prevPosts.map((post) =>
+            post._id === response.data._id ? response.data : post
+          );
+          return updated.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        });
       } else {
         const response = await axiosInstance.post('/api/posts', { ...formData, author: user._id }, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
-        setPosts([...posts, response.data]);
+        // setPosts([...posts, response.data]);
+        // Posts sorting by date.
+        setPosts((prevPosts) => {
+          const updated = [...prevPosts, response.data];
+          return updated.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        })
       }
       setEditingPost(null);
       setFormData({ title: '', content: '' });

@@ -40,7 +40,7 @@ const ReplyList = ({ postId }) => {
           <p>{reply.content}</p>
           <p className="text-sm text-gray-500">By: {reply.author.name}</p>
           <p className="text-sm text-gray-500">Reply at: {new Date(reply.createdAt).toLocaleString()}</p>
-          {user && reply.author && String(user.id) === String(reply.author._id) && (
+          {user && reply.author && (String(user.id) === String(reply.author._id) || user.role === 'Admin') && (
             <button onClick={() => handleDelete(reply._id)} className="bg-red-500 text-white px-2 py-1 rounded text-sm">
               Delete
             </button>
