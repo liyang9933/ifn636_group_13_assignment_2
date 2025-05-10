@@ -10,6 +10,7 @@ const PostList = () => {
   const [editingPost, setEditingPost] = useState(null);
 
   useEffect(() => {
+    // console.log('Logged-in user:', user);
     const fetchPosts = async () => {
       try {
         const response = await axiosInstance.get('/api/posts');
@@ -44,16 +45,34 @@ const PostList = () => {
             <p>{post.content}</p>
             <p className="text-sm text-gray-500">By: {post.author.name}</p>
             <p className="text-sm text-gray-500">Created at: {new Date(post.createdAt).toLocaleString()}</p>
-            {user && post.author && String(user.id) === String(post.author._id) && (
+            {/* {user && post.author && String(user.id) === (String(post.author._id) || user.role === 'Admin') && (
               <div className="mt-2">
-                <button onClick={() => setEditingPost(post)} className="mr-2 bg-yellow-500 text-white px-4 py-2 rounded">
-                  Edit
-                </button>
+                {String(user.id) === String(post.author._id) && (
+                  <button onClick={() => setEditingPost(post)} className="mr-2 bg-yellow-500 text-white px-4 py-2 rounded">
+                    Edit
+                  </button>
+                )}
                 <button onClick={() => handleDelete(post._id)} className="bg-red-500 text-white px-4 py-2 rounded">
                   Delete
                 </button>
               </div>
+            )} */}
+            {/* Admin can use delete button for all users and only author can edit them. */}
+            {user && post.author && (
+              <div className="mt-2">
+                {String(user.id) === String(post.author._id) && (
+                  <button onClick={() => setEditingPost(post)} className="mr-2 bg-yellow-500 text-white px-4 py-2 rounded">
+                    Edit
+                  </button>
+                )}
+                {(String(user.id) === String(post.author._id) || user.role === 'Admin') && (
+                  <button onClick={() => handleDelete(post._id)} className="bg-red-500 text-white px-4 py-2 rounded">
+                    Delete
+                  </button>
+                )}
+              </div>
             )}
+
             <ReplyList postId={post._id} />
           </div>
         );

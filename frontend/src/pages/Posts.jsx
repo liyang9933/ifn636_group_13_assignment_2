@@ -15,13 +15,11 @@ const Posts = () => {
         const response = await axiosInstance.get('/api/posts', {
           headers: { Authorization: `Bearer ${user.token}` },
         });
-        // console.log('Fetched posts:', response.data);
         setPosts(response.data);
       } catch (error) {
         alert('Failed to fetch posts.');
       }
     };
-
     fetchPosts();
   }, [user]);
 

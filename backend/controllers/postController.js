@@ -50,7 +50,10 @@ const updatePost = async (req, res) => {
     post.content = content || post.content;
     post.updatedAt = Date.now();
 
-    const updatedPost = await post.save();
+    // const updatedPost = await post.save();
+    const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    }).populate('author', 'name _id');
     res.json(updatedPost);
   } catch (error) {
     res.status(500).json({ message: error.message });
