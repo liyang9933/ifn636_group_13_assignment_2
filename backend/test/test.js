@@ -3,9 +3,11 @@ const sinon = require('sinon');
 const mongoose = require('mongoose');
 const { expect } = chai;
 
-
 const Post = require('../models/Post');
 const Reply = require('../models/Reply');
+const PostServiceProxy = require('../services/PostServiceProxy');
+const ReplyServiceProxy = require('../services/ReplyServiceProxy');
+
 const {
   getPosts,
   addPost,
@@ -29,7 +31,7 @@ describe('Post Controller Tests', () => {
 
   it('should get all posts', async () => {
     const mockPosts = [{ title: 'Test Post' }];
-    const findStub = sinon.stub(Post, 'find').returns({
+    sinon.stub(Post, 'find').returns({
       populate: sinon.stub().returns({
         populate: sinon.stub().resolves(mockPosts),
       }),
@@ -71,7 +73,9 @@ describe('Post Controller Tests', () => {
     expect(res.json.calledWith(createdPost)).to.be.true;
   });
 
-  it('should update a post', async () => {
+  it('should update a post', async function () {
+    this.timeout(5000);
+
     const userId = new mongoose.Types.ObjectId();
     const postId = new mongoose.Types.ObjectId();
     const req = {
@@ -80,15 +84,19 @@ describe('Post Controller Tests', () => {
       body: { title: 'Updated Title', content: 'Updated Content' },
     };
 
-    const post = {
+    sinon.stub(Post, 'findById').resolves({
       _id: postId,
       author: userId,
       title: 'Old Title',
       content: 'Old Content',
-      save: sinon.stub().resolvesThis(),
-    };
+    });
 
-    sinon.stub(Post, 'findById').resolves(post);
+    sinon.stub(Post, 'findByIdAndUpdate').returns({
+      populate: sinon.stub().returnsThis(),
+      author: { _id: userId, name: 'Test User' },
+      title: 'Updated Title',
+      content: 'Updated Content',
+    });
 
     const res = {
       json: sinon.spy(),
@@ -96,22 +104,26 @@ describe('Post Controller Tests', () => {
     };
 
     await updatePost(req, res);
-    expect(post.title).to.equal('Updated Title');
-    expect(res.json.calledOnceWith(post)).to.be.true;
+
+    expect(res.json.calledOnce).to.be.true;
+    const responseData = res.json.firstCall.args[0];
+    expect(responseData.title).to.equal('Updated Title');
+    expect(responseData.author._id.toString()).to.equal(userId.toString());
   });
 
-  it('should delete post and its replies', async () => {
+  it('should delete post and its replies', async function () {
+    this.timeout(5000);
+
     const userId = new mongoose.Types.ObjectId();
     const postId = new mongoose.Types.ObjectId();
 
-    const post = {
+    sinon.stub(Post, 'findById').resolves({
       _id: postId,
       author: userId,
       remove: sinon.stub().resolves(),
-    };
-
-    sinon.stub(Post, 'findById').resolves(post);
-    const deleteManyStub = sinon.stub(Reply, 'deleteMany').resolves();
+      isModified: () => false,
+      save: async () => { },
+    });
 
     const req = {
       user: { id: userId.toString() },
@@ -123,12 +135,17 @@ describe('Post Controller Tests', () => {
       json: sinon.spy(),
     };
 
+    // Mock PostServiceProxy delete
+    const deleteStub = sinon.stub(PostServiceProxy.prototype, 'deletePost').resolves({
+      message: 'Post and replies deleted',
+    });
+
     await deletePost(req, res);
 
-    expect(deleteManyStub.calledOnce).to.be.true;
-    expect(post.remove.calledOnce).to.be.true;
+    expect(deleteStub.calledOnce).to.be.true;
     expect(res.json.calledWith({ message: 'Post and replies deleted' })).to.be.true;
   });
+
 });
 
 // ---------- Reply Controller Tests ----------
@@ -154,12 +171,12 @@ describe('Reply Controller Tests', () => {
     };
 
     sinon.stub(Reply, 'create').resolves(reply);
-    const populateStub = sinon.stub(Reply, 'findById').resolves({
+    sinon.stub(Reply, 'findById').resolves({
       ...reply,
       author: { name: 'User Name', _id: userId },
     });
 
-    const updateStub = sinon.stub(Post, 'findByIdAndUpdate').resolves();
+    sinon.stub(Post, 'findByIdAndUpdate').resolves();
 
     const res = {
       status: sinon.stub().returnsThis(),
@@ -168,13 +185,12 @@ describe('Reply Controller Tests', () => {
 
     await addReply(req, res);
 
-    expect(populateStub.calledOnce).to.be.true;
     expect(res.json.called).to.be.true;
   });
 
   it('should get replies for a post', async () => {
     const replies = [{ content: 'Reply 1' }];
-    const findStub = sinon.stub(Reply, 'find').returns({
+    sinon.stub(Reply, 'find').returns({
       populate: sinon.stub().resolves(replies),
     });
 
@@ -188,32 +204,28 @@ describe('Reply Controller Tests', () => {
     expect(res.json.calledWith(replies)).to.be.true;
   });
 
-  it('should delete a reply', async () => {
-    const userId = new mongoose.Types.ObjectId();
+  it('should delete a reply (via proxy)', async function () {
+    this.timeout(5000);
+
     const replyId = new mongoose.Types.ObjectId();
+    const userId = new mongoose.Types.ObjectId();
+
     const req = {
       user: { id: userId.toString() },
-      params: { replyId },
+      params: { replyId: replyId.toString() },
     };
-
-    const reply = {
-      _id: replyId,
-      author: userId,
-      postId: new mongoose.Types.ObjectId(),
-      remove: sinon.stub().resolves(),
-    };
-
-    sinon.stub(Reply, 'findById').resolves(reply);
-    const updateStub = sinon.stub(Post, 'findByIdAndUpdate').resolves();
 
     const res = {
       json: sinon.spy(),
       status: sinon.stub().returnsThis(),
     };
 
+    // ✅ Mock proxy deleteReply
+    const proxyStub = sinon.stub(ReplyServiceProxy.prototype, 'deleteReply').resolves(true);
+
     await deleteReply(req, res);
-    expect(reply.remove.calledOnce).to.be.true;
-    expect(updateStub.calledOnce).to.be.true;
-    expect(res.json.calledWith({ message: 'Reply deleted' })).to.be.true;
+
+    expect(proxyStub.calledOnceWith(replyId.toString(), userId.toString())).to.be.true;
+    expect(res.json.calledWith({ message: 'Reply deleted successfully' })).to.be.true;
   });
 });

@@ -61,25 +61,6 @@ const updatePost = async (req, res) => {
 };
 
 // Delete Post
-/* const deletePost = async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    if (!post) return res.status(404).json({ message: 'Post not found' });
-
-    const userDoc = await User.findById(req.user.id); // Check the user is admin.
-    const user = UserFactory.create(userDoc);
-
-    if (post.author.toString() !== req.user.id && !user.canDeleteAnyPost())
-      return res.status(403).json({ message: 'Not authorized to delete this post' });
-
-    await Reply.deleteMany({ postId: post._id }); // Delete associated replies
-    await post.remove();
-    res.json({ message: 'Post and replies deleted' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-    console.error('[Delete Post Error]', error);
-  }
-}; */
 // factory and proxy design pattern
 const deletePost = async (req, res) => {
   const postService = new PostService();
