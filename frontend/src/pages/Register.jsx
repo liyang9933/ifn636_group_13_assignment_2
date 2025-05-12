@@ -20,8 +20,8 @@ const Register = () => {
 
   return (
     <div className="max-w-md mx-auto mt-20">
-      <form onSubmit={handleSubmit} className="bg-white p-6 shadow-md rounded">
-        <h1 className="text-2xl font-bold mb-4 text-center">Register</h1>
+      <form onSubmit={handleSubmit} className="bg-[#53967B33] p-6 shadow-md rounded-lg">
+        <h1 className="text-[#484444] font-sans mb-4 text-center text-[24px]">Register</h1>
         <input
           type="text"
           placeholder="Name"
@@ -48,9 +48,12 @@ const Register = () => {
           <option value="Member">Member</option>
           <option value="Admin">Admin</option>
         </select>
-        <button type="submit" className="w-full bg-green-600 text-white p-2 rounded">
+       
+        <div className="flex justify-center mx-auto mt-5 ">
+        <button type="submit" className="w-1/3 bg-[#53967B] text-white p-2 rounded-md">
           Register
         </button>
+        </div>
       </form>
     </div>
   );

@@ -24,14 +24,16 @@ const ReplyForm = ({ postId, replies, setReplies }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-4">
+    <form onSubmit={handleSubmit} className="mb-4 flex gap-2 items-start">
       <textarea
         placeholder="Write a reply..."
         value={content}
         onChange={(e) => setContent(e.target.value)}
         className="w-full p-2 border rounded"
       ></textarea>
-      <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded mt-2">
+      
+      <button type="submit" 
+      className="bg-[#53967B33] text-sm text-[#494545] px-4 py-5 rounded hover:underline">
         Reply
       </button>
     </form>
