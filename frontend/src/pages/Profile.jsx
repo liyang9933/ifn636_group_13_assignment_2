@@ -57,39 +57,55 @@ const Profile = () => {
 
   return (
     <div className="max-w-md mx-auto mt-20">
-      <form onSubmit={handleSubmit} className="bg-white p-6 shadow-md rounded">
-        <h1 className="text-2xl font-bold mb-4 text-center">Your Profile</h1>
+      <form onSubmit={handleSubmit} className="bg-[#53967B33] p-6 shadow-md rounded-lg">
+        <h1 className="text-[#484444] font-sans mb-4 text-center text-[24px]">Your Profile</h1>
+        
+        <div className="flex justify-center">
         <input
           type="text"
           placeholder="Name"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          className="w-full mb-4 p-2 border rounded"
+          className="w-3/4 mb-4 p-2 border rounded"
         />
+        </div>
+        
+        <div className="flex justify-center">
         <input
           type="email"
           placeholder="Email"
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          className="w-full mb-4 p-2 border rounded"
+          className="w-3/4 mb-4 p-2 border rounded"
         />
+        </div>
+
+        <div className="flex justify-center">
         <input
           type="text"
           placeholder="University"
           value={formData.university}
           onChange={(e) => setFormData({ ...formData, university: e.target.value })}
-          className="w-full mb-4 p-2 border rounded"
+          className="w-3/4 mb-4 p-2 border rounded"
         />
+        </div>
+
+        <div className="flex justify-center">
         <input
           type="text"
           placeholder="Address"
           value={formData.address}
           onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-          className="w-full mb-4 p-2 border rounded"
+          className="w-3/4 mb-4 p-2 border rounded"
         />
-        <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">
+        </div>
+
+        <div className="flex justify-center">
+        <button type="submit" className="w-1/3 bg-[#53967B] text-white p-2 rounded-md">
           {loading ? 'Updating...' : 'Update Profile'}
         </button>
+        </div>
+
       </form>
     </div>
   );

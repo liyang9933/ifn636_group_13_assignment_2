@@ -50,23 +50,36 @@ const PostForm = ({ posts, setPosts, editingPost, setEditingPost }) => {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 shadow-md rounded mb-6">
-      <h1 className="text-2xl font-bold mb-4">{editingPost ? 'Edit Post' : 'Create Post'}</h1>
+
+    <div className="mb-4 grid grid-cols-1 md:grid-cols-6 gap-4 items-center">
+      <label className="md:col-span-1 text-gray-600 font-medium text-right">
+      Topic Title:
+      </label>
       <input
-        type="text"
-        placeholder="Title"
-        value={formData.title}
-        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-        className="w-full mb-4 p-2 border rounded"
+      type="text"
+      value={formData.title}
+      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+      className="md:col-span-4 p-2 border rounded w-full"
       />
-      <textarea
-        placeholder="Content"
-        value={formData.content}
-        onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-        className="w-full mb-4 p-2 border rounded"
-      ></textarea>
-      <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">
+      <button
+        type="submit"
+        className="bg-[#53967B33] text-[#494545] px-4 py-2 rounded-md md:col-span-1"
+      >
         {editingPost ? 'Update Post' : 'Create Post'}
       </button>
+    </div>
+
+    <div className="mb-4 grid grid-cols-1 md:grid-cols-6 gap-4 items-start">
+      <label className="md:col-span-1 text-gray-600 font-medium text-right">
+        Topic Content:
+      </label>
+      <textarea
+        
+        value={formData.content}
+        onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+        className="md:col-span-5 p-2 border rounded w-full"
+      ></textarea>
+    </div>
     </form>
   );
 };
