@@ -1,46 +1,109 @@
-* JIRA board URL: https://ifn636liyang.atlassian.net/jira/software/projects/FDB/boards/100?atlOrigin=eyJpIjoiNTdkYTM1NTU1Y2Q5NDQxMGJmNjU0ZDk0ZTVkNzIyOWYiLCJwIjoiaiJ9
+#  Discusion board forum
 
-* App base URL: http://3.106.250.158:5001
-* Discussion Board Application Overview: The discussion board application is designed to provide a platform for users to solve problems and contribute knowledge and experience. This is a web-based discussion board application that supports users to register, log in, create, edit and delete posts and sending/deleting replies. It also has user management function which can only allow the content creators to change their own posts/replies. The application is suitable for learning or as a basic platform for small communities.
 
-Features:
-- User Authentication:
+
+## Discussion Board Application Overview
+
+
+
+*  The discussion board application is designed to provide a platform for users to solve problems and contribute knowledge and experience. This is a web-based discussion board application that supports users to register, log in, create, edit and delete posts and sending/deleting replies. It also has user management function which can only allow the content creators to change their own posts/replies. The application is suitable for learning or as a basic platform for small communities.
+
+* App base URL: http://3.106.250.158
+
+  <hr/>
+
+## Features:
+
+#### 	Member users can:
+
+- User Authentication
+
 - New user sign up
+
 - User Login/Log-out
 
-- Post your Threads:
-- Create, edit, delete your own posts
-- View all Threads
+- Post your Threads
 
-- Reply others Threads:
-- Create, delte your own replies
+- Create, edit, delete your own posts
+
+- View all posts
+
+- Reply others posts
+
+- Create, delete your own replies
+
 - View all replies
 
-Tech stack:
+  <hr/>
+
+#### Admin users can:
+
+- User Authentication
+
+- New user sign up
+
+- User Login/Log-out
+
+- Post your Threads
+
+- Create, edit, delete your own posts
+
+- Delete any other posts
+
+- View all posts
+
+- Reply others posts
+
+- Create, delete your own replies
+
+- Delete any other replies
+
+- View all replies
+
+  
+
+## A list of API Endpoints
+
+| Method       | URL                           | **Functionality Description**     |
+| ------------ | ----------------------------- | --------------------------------- |
+| ```POST```   | ```/api/auth/register```      | Register a new user.              |
+| ```POST```   | ```/api/auth/login```         | Existed user login.               |
+| ```GET```    | ```/api/auth/profile```       | Retrieve user profile.            |
+| ```GET```    | ```/api/posts```              | Retrieve all posts.               |
+| ```DELETE``` | ```/api/posts/:id```          | Delete post #id.                  |
+| ```POST```   | ```/api/posts/```             | Create a new post.                |
+| ```PUT```    | ```/api/posts/:id```          | Update data in post #id.          |
+| ```POST```   | ```/api/posts/:id/replies/``` | Create a new reply to post #id.   |
+| ```DELETE``` | ```/api/posts/replies/:id```  | Delete reply #id.                 |
+| ```GET```    | ```/api/posts/:id/replies/``` | Retrieve all replies of post #id. |
+
+## Tech stack:
 
 - **Backend**: Node.js + Express
+
 - **Frontend**: React
+
 - **Database**: MongoDB
+
 - **Authentication**: JWT
+
 - **CI/CD**: GitHub Actions + AWS EC2
+
+  <hr/>
 
 ## Project Setup
 
 ### 1. Clone the repository
-```git clone https://github.com/liyang9933/IFN636-A1.git```
+```git clone https://github.com/liyang9933/ifn636_group_13_assignment_2.git```
 
 ### 2. Install dependencies
 ```npm install```
 
-### 3. Environment setup
 
-MONGO_URI=mongodb+srv://liyang9933:199933@cluster0.gafcx.mongodb.net/taskmanager?retryWrites=true&w=majority&appName=Cluster0<br/>
-JWT_SECRET=2J8zqkP7VN6bxzg+Wy7DQZsd3Yx8mF3Bl0kch6HYtFs=<br/>
-PORT=5001
-
-
-### 4. Run the application
+### 3. Run the application
 ```npm start```
+
+<hr/>
 
 ## CI/CD Pipeline Details
 This project uses GitHub Actions for CI/CD Pipline. A runner is set up on an AWS EC2 instance. 
@@ -127,4 +190,31 @@ jobs:
     - run: pm2 start all
 
     - run: pm2 restart all
-    
+```
+
+##  How to contribute to the development of Discussion board
+
+I welcome contributions! If you'd like to help, please:
+
+- Fork this repository.
+- Create a new branch (`git checkout -b feature-branch`).
+- Make your changes and commit them (`git commit -am 'Add new feature'`).
+- Push to your fork and submit a pull request."
+
+##  How to report issues
+
+Found a bug or have a suggestion? We are hearing from you!
+
+1. **Check existing issues**
+   Before opening a new issue, please [search the existing issues](https://github.com/liyang9933/ifn636_group_13_assignment_2/issues) to avoid duplicates.
+2. **Open a new issue**
+   If your issue hasn’t been reported yet, [open a new issue](https://github.com/liyang9933/ifn636_group_13_assignment_2/issues/new) and include the following details:
+   - **Title**: A short and descriptive summary of the issue.
+   - **Description**: What happened? What did you expect to happen?
+   - **Steps to Reproduce**: Provide clear steps so we can reproduce the problem.
+   - **Screenshots** (if applicable): Help us understand the issue faster.
+   - **Environment**: Browser, OS, device, or other relevant info.
+3. **Be respectful**
+   We're all here to build a better project. Please be polite and constructive in your communication.
+
+> ✅ Tip: If you're not sure whether something is a bug or a feature request, feel free to ask — We are happy to help!
