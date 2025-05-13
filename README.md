@@ -1,7 +1,7 @@
 * JIRA board URL: https://ifn636liyang.atlassian.net/jira/software/projects/FDB/boards/100?atlOrigin=eyJpIjoiNTdkYTM1NTU1Y2Q5NDQxMGJmNjU0ZDk0ZTVkNzIyOWYiLCJwIjoiaiJ9
 
 * App base URL: http://3.106.250.158:5001
-* Discussion Board Application Overview: The discussion board application is designed to provide a platform for users to solve problems and contribute knowledge and experience. This is a web-based discussion board application that supports users to register, log in, create, edit and delete posts and sending/deleting replies. It also has user management function which can only allow the content creators to change their own posts/replies. The application is suitable for learning or as a basic platform for small communities.
+* Discussion Board Application Overview: The discussion board application is designed to provide a platform for users to solve problems and contribute knowledge and experience. This is a web-based discussion board application that supports users to register, login/logout, edit profile, create, edit and delete posts and sending/deleting replies. The system enforces content ownership by allowing only the original content creators to modify or delete their posts and replies, while administrators have the authority to delete any threads and replies to maintain order. Threads are sorted by creation time, making it easy for users to view the latest discussions. The application is suitable for learning or as a basic platform for small communities.
 
 Features:
 - User Authentication:
@@ -9,12 +9,19 @@ Features:
 - User Login/Log-out
 
 - Post your Threads:
-- Create, edit, delete your own posts
+- Member create, edit, delete own threads
+- Admin delete any threads
 - View all Threads
+- Threads sorting by time
 
 - Reply others Threads:
-- Create, delte your own replies
+- Member create, delete own replies
+- Admin delete any replies
 - View all replies
+
+- Profile Management:
+- Edit own profile
+- View own profile
 
 Tech stack:
 
@@ -34,9 +41,7 @@ Tech stack:
 
 ### 3. Environment setup
 
-MONGO_URI=mongodb+srv://liyang9933:199933@cluster0.gafcx.mongodb.net/taskmanager?retryWrites=true&w=majority&appName=Cluster0<br/>
-JWT_SECRET=2J8zqkP7VN6bxzg+Wy7DQZsd3Yx8mF3Bl0kch6HYtFs=<br/>
-PORT=5001
+
 
 
 ### 4. Run the application
