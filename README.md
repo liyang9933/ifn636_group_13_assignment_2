@@ -1,4 +1,4 @@
-#  Discusion board forum
+#  Discussion board forum
 
 
 
@@ -69,6 +69,7 @@
 | ```POST```   | ```/api/auth/register```      | Register a new user.              |
 | ```POST```   | ```/api/auth/login```         | Existed user login.               |
 | ```GET```    | ```/api/auth/profile```       | Retrieve user profile.            |
+| ```PUT```    | ```/api/auth/profile```       | Update data in user profile.      |
 | ```GET```    | ```/api/posts```              | Retrieve all posts.               |
 | ```DELETE``` | ```/api/posts/:id```          | Delete post #id.                  |
 | ```POST```   | ```/api/posts/```             | Create a new post.                |
